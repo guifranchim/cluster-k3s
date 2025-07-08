@@ -4,7 +4,7 @@ metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: cert-manager
@@ -12,3 +12,17 @@ spec:
       sourceRef: {kind: HelmRepository, name: jetstack, namespace: flux-system}
   install: {createNamespace: false, crds: Create}
   upgrade: {crds: CreateReplace}
+  # A solução real, agora que a API suporta
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager
+      namespace: cert-manager
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager-cainjector
+      namespace: cert-manager
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager-webhook
+      namespace: cert-manager
