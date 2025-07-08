@@ -124,7 +124,9 @@ spec:
       version: 4.8.3
       sourceRef: {kind: HelmRepository, name: ingress-nginx, namespace: flux-system}
   install: {createNamespace: false}
-  upgrade: {createNamespace: false}
+  upgrade:
+    remediation:
+      retries: 3
   values:
     controller:
       service: {type: LoadBalancer}
