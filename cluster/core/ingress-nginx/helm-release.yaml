@@ -13,11 +13,17 @@ spec:
         kind: HelmRepository
         name: ingress-nginx
         namespace: flux-system
+  
+  install:
+    createNamespace: false 
+  upgrade:
+    createNamespace: false
+
   values:
     controller:
       service:
         type: LoadBalancer
-      ingressClassResource:        
+      ingressClassResource:
         name: nginx
         enabled: true
         default: true
