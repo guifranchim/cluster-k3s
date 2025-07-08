@@ -15,3 +15,7 @@ resources:
 # Manage core infrastructure 
 - ../core
 - ../apps
+
+# Manage core infrastructure and applications from their respective directories
+- ../core
+- ../apps
