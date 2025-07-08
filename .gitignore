@@ -1,0 +1,8 @@
+age.key
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+
+# Local environment files
+.env
