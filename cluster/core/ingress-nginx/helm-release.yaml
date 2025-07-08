@@ -13,12 +13,10 @@ spec:
         kind: HelmRepository
         name: ingress-nginx
         namespace: flux-system
-  
   install:
-    createNamespace: false 
+    createNamespace: false
   upgrade:
     createNamespace: false
-
   values:
     controller:
       service:
