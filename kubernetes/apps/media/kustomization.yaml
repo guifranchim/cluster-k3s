@@ -1,6 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - letsencrypt-issuer.yaml
-dependsOn:
-  - name: core-cert-manager-main
+  - namespace.yaml
+  - plex/
