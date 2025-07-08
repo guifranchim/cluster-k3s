@@ -31,5 +31,5 @@ spec:
     persistence:
       config: {enabled: true, mountPath: /config, type: hostPath, hostPath: /srv/k3s/configs/plex}
       media: {enabled: true, mountPath: /media, type: hostPath, hostPath: /mnt/media}
-      transcode: {enabled: true, type: hostPath, hostPath: /srv/kths/configs/plex/transcode}
+      transcode: {enabled: true, type: hostPath, hostPath: /srv/k3s/configs/plex/transcode}
     env: {TZ: "America/Sao_Paulo"}

@@ -1,14 +1,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-stack
+  name: applications
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/apps/media
+  path: ./kubernetes/apps
   prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+  sourceRef: {kind: GitRepository, name: flux-system}
   dependsOn:
-    - name: cert-manager
+    - name: infrastructure

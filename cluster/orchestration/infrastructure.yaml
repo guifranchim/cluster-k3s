@@ -1,14 +1,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cert-manager
+  name: infrastructure
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/core/cert-manager
+  path: ./kubernetes/infrastructure
   prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
+  sourceRef: {kind: GitRepository, name: flux-system}
   dependsOn:
-    - name: ingress-nginx
+    - name: repositories
