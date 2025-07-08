@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
 - repositories.yaml
 - infrastructure.yaml
+- infrastructure-config.yaml
 - applications.yaml
