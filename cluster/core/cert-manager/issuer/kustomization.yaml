@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./ingress-nginx
-  - ./cert-manager
-  - ./cert-manager/issuer
+  - letsencrypt-issuer.yaml
+dependsOn:
+  - name: core-cert-manager-main
