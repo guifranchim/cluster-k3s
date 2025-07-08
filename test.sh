@@ -168,6 +168,22 @@ spec:
       sourceRef: {kind: HelmRepository, name: jetstack, namespace: flux-system}
   install: {createNamespace: true, crds: Create}
   upgrade: {crds: CreateReplace}
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager
+      namespace: cert-manager
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager-cainjector
+      namespace: cert-manager
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager-webhook
+      namespace: cert-manager
+
+  values:
+    webhook: {hostNetwork: true, dnsPolicy: ClusterFirstWithHostNet}
 EOF
 
 cat <<EOF > kubernetes/core/cert-manager/letsencrypt-issuer.yaml
