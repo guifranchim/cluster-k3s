@@ -3,3 +3,11 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+
+# Manage core infrastructure and applications
+- ../core
+- ../apps
+
+# Manage core infrastructure and applications from their respective directories
+- ../core
+- ../apps
