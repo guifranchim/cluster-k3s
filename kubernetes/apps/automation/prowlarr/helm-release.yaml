@@ -15,7 +15,7 @@ spec:
         containers:
           main:
             image:
-              repository: lscr.io/linuxserver/prowlarr]
+              repository: lscr.io/linuxserver/prowlarr
               tag: latest
             env:
               PUID: "0"
@@ -25,21 +25,20 @@ spec:
       main:
         ports:
           http:
-            port: 9696]
+            port: 9696
     ingress:
       main:
         enabled: true
         className: "nginx"
         hosts:
-          - host: prowlarr.franch.in]
+          - host: prowlarr.franch.in
             paths: [{ path: /, pathType: Prefix }]
         tls:
-          - secretName: prowlarr-tls]
+          - secretName: prowlarr-tls
             hosts: [prowlarr.franch.in]
         annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
     persistence:
       config:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/prowlarr]
-        mountPath: /config
+        hostPath: /srv/k3s/configs/prowlarr
