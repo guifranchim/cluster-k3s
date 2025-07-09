@@ -10,11 +10,12 @@ spec:
       chart: cert-manager
       version: v1.13.2
       sourceRef: {kind: HelmRepository, name: jetstack, namespace: flux-system}
-  values:    
+  values:
     installCRDs: true
     webhook:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
+      securePort: 10260
     cainjector:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
