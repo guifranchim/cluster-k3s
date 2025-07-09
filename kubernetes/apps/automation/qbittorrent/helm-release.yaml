@@ -44,7 +44,7 @@ spec:
       config:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/plex
+        hostPath: /srv/k3s/configs/plex 
       transcode:
         enabled: true
         type: emptyDir
@@ -53,10 +53,10 @@ spec:
         type: hostPath
         hostPath: /mnt/media
         mountPath: /media
-        readOnly: true
+        readOnly: true      
       torrent-downloads:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads
-        mountPath: /downloads
-        readOnly: true
+        hostPath: /srv/k3s/data/downloads 
+        mountPath: /downloads              
+        readOnly: true                     
