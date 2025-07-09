@@ -22,6 +22,8 @@ spec:
               WEBUI_UP: "true"
               WEBUI_USERNAME: "admin"
               WEBUI_PASSWORD: "changeme"
+              PUID: "1000"
+              PGID: "1000"
     service:
       main:
         ports:
@@ -43,8 +45,8 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/qbittorrent
-      # downloads:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/downloads
-      #   mountPath: /downloads
+      downloads:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/data/downloads
+        mountPath: /downloads  
