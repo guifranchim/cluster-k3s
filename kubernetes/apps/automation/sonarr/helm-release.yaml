@@ -43,7 +43,6 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/sonarr
-        mountPath: /config
       # downloads:
       #   enabled: true
       #   type: hostPath

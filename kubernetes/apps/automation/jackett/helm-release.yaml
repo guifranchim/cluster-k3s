@@ -39,7 +39,6 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/jackett
-        mountPath: /config
       # downloads:
       #   enabled: true
       #   type: hostPath

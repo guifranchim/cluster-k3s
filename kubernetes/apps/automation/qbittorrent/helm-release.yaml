@@ -43,9 +43,8 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/qbittorrent
-        mountPath: /config
-      downloads:
-        enabled: true
-        type: hostPath
-        hostPath: /mnt/downloads
-        mountPath: /downloads
+      # downloads:
+      #   enabled: true
+      #   type: hostPath
+      #   hostPath: /mnt/downloads
+      #   mountPath: /downloads
