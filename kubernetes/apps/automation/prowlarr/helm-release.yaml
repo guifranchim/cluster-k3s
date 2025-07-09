@@ -1,14 +1,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radarr
+  name: prowlarr
   namespace: automation
 spec:
   interval: 15m
   chart:
     spec:
       chart: app-template
-      version: "4.1.2"
+      version: "4.1.2" 
       sourceRef: { kind: HelmRepository, name: bjw-s-labs, namespace: flux-system }
   values:
     controllers:
@@ -16,36 +16,31 @@ spec:
         containers:
           main:
             image:
-              repository: lscr.io/linuxserver/radarr
+              repository: lscr.io/linuxserver/prowlarr 
               tag: latest
+            env:
+              PUID: "0"
+              PGID: "0"
+              TZ: "America/Sao_Paulo"
     service:
       main:
         ports:
           http:
-            port: 7878
+            port: 9696 
     ingress:
       main:
         enabled: true
         className: "nginx"
         hosts:
-          - host: radarr.franch.in
+          - host: prowlarr.franch.in 
             paths: [{ path: /, pathType: Prefix }]
         tls:
-          - secretName: radarr-tls
-            hosts: [radarr.franch.in]
+          - secretName: prowlarr-tls 
+            hosts: [prowlarr.franch.in]
         annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
     persistence:
       config:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/radarr
-      # downloads:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/downloads
-      #   mountPath: /downloads
-      # movies:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/media/movies
-      #   mountPath: /movies
+        hostPath: /srv/k3s/configs/prowlarr 
+        mountPath: /config
