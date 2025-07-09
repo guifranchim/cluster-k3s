@@ -16,6 +16,7 @@ spec:
         namespace: flux-system
       reconcileStrategy: ChartVersion
   values:
+    claimToken: "claim-HLgs2wUhGVbtk9rCC3BE"
     timezone: "America/Sao_Paulo"
     ingress:
       enabled: true
