@@ -1,38 +1,55 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: plex
   namespace: media
 spec:
   interval: 15m
-  releaseName: plex
   chart:
     spec:
-      chart: plex-media-server
-      version: "1.0.2"
+      chart: app-template
+      version: "4.1.2"
       sourceRef:
         kind: HelmRepository
-        name: plex
+        name: bjw-s-labs
         namespace: flux-system
-      reconcileStrategy: ChartVersion
   values:
-    pms:
-      securityContext:
-        privileged: true
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: lscr.io/linuxserver/plex
+              tag: latest
+            env:
+              PUID: "1000"
+              PGID: "1000"
+              TZ: "America/Sao_Paulo"
+            securityContext:
+              privileged: false
+              devices:
+                - /dev/dri:/dev/dri
+    service:
+      main:
+        ports:
+          http:
+            port: 32400
+
     ingress:
-      enabled: true
-      ingressClassName: "nginx" 
-      hosts:
-        - host: plex.franch.in
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - secretName: plex-tls-cert
-          hosts:
-            - plex.franch.in
-      annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
+      main:
+        enabled: true
+        className: "nginx"
+        hosts:
+          - host: plex.franch.in
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: plex-tls-cert
+            hosts:
+              - plex.franch.in
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
     persistence:
       config:
         enabled: true
@@ -40,12 +57,16 @@ spec:
         hostPath: /srv/k3s/configs/plex
       transcode:
         enabled: true
+        type: emptyDir
+      # media:
+      #   enabled: true
+      #   type: hostPath
+      #   hostPath: /mnt/media 
+      #   mountPath: /media   
+      #   readOnly: true
+      downloads:
+        enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/plex/transcode
-    additionalVolumes:
-      - name: media
-        hostPath:
-          path: /mnt/media
-    additionalVolumeMounts:
-      - name: media
-        mountPath: /media
+        hostPath: /srv/k3s/data/downloads  
+        mountPath: /downloads              
+        readOnly: true                     
