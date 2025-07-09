@@ -16,8 +16,6 @@ spec:
         namespace: flux-system
       reconcileStrategy: ChartVersion
   values:
-    extraEnv:
-      PLEX_CLAIM: "claim-YXtPvvr3JrKnQbmMuMq2"
     pms:
       securityContext:
         privileged: true
