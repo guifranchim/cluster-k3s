@@ -49,4 +49,3 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/data/downloads
-        mountPath: /downloads  
