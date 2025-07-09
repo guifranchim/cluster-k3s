@@ -16,12 +16,14 @@ spec:
         namespace: flux-system
       reconcileStrategy: ChartVersion
   values:
-    claimToken: "claim-xoMFECEu3mieGY27naYB"
-    timezone: "America/Sao_Paulo"
-    securityContext:
-      privileged: true
+    extraEnv:
+      PLEX_CLAIM: "claim-YXtPvvr3JrKnQbmMuMq2"
+    pms:
+      securityContext:
+        privileged: true
     ingress:
       enabled: true
+      ingressClassName: "nginx" 
       hosts:
         - host: plex.franch.in
           paths:
@@ -33,7 +35,6 @@ spec:
             - plex.franch.in
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-production"
-      ingressClassName: "nginx" 
     persistence:
       config:
         enabled: true
