@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: radarr
@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: "2.4.0"
+      version: "4.1.2"
       sourceRef: { kind: HelmRepository, name: bjw-s-labs, namespace: flux-system }
   values:
     controllers:
@@ -22,34 +22,30 @@ spec:
       main:
         ports:
           http:
-            port: 7878 
+            port: 7878
     ingress:
-      main: 
+      main:
         enabled: true
-        className: "nginx" 
+        className: "nginx"
         hosts:
           - host: radarr.franch.in
-            paths:
-              - path: /
-                pathType: Prefix
+            paths: [{ path: /, pathType: Prefix }]
         tls:
-          - hosts:
-              - radarr.franch.in
-            secretName: radarr-tls
-        annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          - secretName: radarr-tls
+            hosts: [radarr.franch.in]
+        annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
     persistence:
       config:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/radarr
-        mountPath: /config 
+        mountPath: /config
       # downloads:
       #   enabled: true
       #   type: hostPath
       #   hostPath: /mnt/downloads
       #   mountPath: /downloads
-      # movies: 
+      # movies:
       #   enabled: true
       #   type: hostPath
       #   hostPath: /mnt/media/movies
