@@ -5,35 +5,45 @@ metadata:
   namespace: media
 spec:
   interval: 15m
+  releaseName: plex
   chart:
     spec:
-      chart: app-template
-      version: 2.4.0
-      reconcileStrategy: ChartVersion
+      chart: plex-media-server
+      version: "1.0.2" 
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-labs
+        name: plex 
         namespace: flux-system
+      reconcileStrategy: ChartVersion
   values:
-    image: {repository: lscr.io/linuxserver/plex, tag: latest}
-    service:
-      main: {ports: {http: {port: 32400}}}
+    timezone: "America/Sao_Paulo"
     ingress:
-      main:
-        enabled: true
-        annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-          kubernetes.io/ingress.class: "nginx"
-        hosts:
-        - host: "plex.franch.in"
+      enabled: true
+      hosts:
+        - host: plex.franch.in
           paths:
-          - {path: /, pathType: Prefix}
-        tls:
+            - path: /
+              pathType: Prefix
+      tls:
         - secretName: plex-tls-cert
           hosts:
-          - "plex.franch.in"
+            - plex.franch.in
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
+        kubernetes.io/ingress.class: "nginx"
     persistence:
-      config: {enabled: true, mountPath: /config, type: hostPath, hostPath: /srv/k3s/configs/plex}
-      media: {enabled: true, mountPath: /media, type: hostPath, hostPath: /mnt/media}
-      transcode: {enabled: true, type: hostPath, hostPath: /srv/k3s/configs/plex/transcode}
-    env: {TZ: "America/Sao_Paulo"}
+      config:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/configs/plex 
+      transcode:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/configs/plex/transcode
+    additionalVolumes:
+      - name: media
+        hostPath:
+          path: /mnt/media
+    additionalVolumeMounts:
+      - name: media
+        mountPath: /media
