@@ -44,16 +44,19 @@ spec:
       config:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/qbittorrent
-        advancedMounts:
-          main: 
-            main: 
-              - path: /config 
-      downloads:
+        hostPath: /srv/k3s/configs/plex
+      transcode:
+        enabled: true
+        type: emptyDir
+      media:
+        enabled: true
+        type: hostPath
+        hostPath: /mnt/media
+        mountPath: /media
+        readOnly: true
+      torrent-downloads:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/data/downloads
-        advancedMounts:
-          main: 
-            main: 
-              - path: /downloads 
+        mountPath: /downloads
+        readOnly: true
