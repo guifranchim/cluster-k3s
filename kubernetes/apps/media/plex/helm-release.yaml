@@ -18,6 +18,8 @@ spec:
   values:
     claimToken: "claim-xoMFECEu3mieGY27naYB"
     timezone: "America/Sao_Paulo"
+    securityContext:
+      privileged: true
     ingress:
       enabled: true
       hosts:
