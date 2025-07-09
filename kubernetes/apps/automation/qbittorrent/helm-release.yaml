@@ -17,7 +17,7 @@ spec:
           main:
             image:
               repository: lscr.io/linuxserver/qbittorrent
-              tag: "4.6.3"
+              tag: "latest"
             env:
               WEBUI_UP: "true"
               WEBUI_USERNAME: "admin"
