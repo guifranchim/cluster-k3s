@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: plex
@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: "4.1.2"
+      version: "4.1.2" 
       sourceRef: { kind: HelmRepository, name: bjw-s-labs, namespace: flux-system }
   values:
     controllers:
@@ -17,16 +17,15 @@ spec:
           main:
             image:
               repository: lscr.io/linuxserver/plex
-              tag: latest
             env:
               PUID: "1000"
               PGID: "1000"
               TZ: "America/Sao_Paulo"
-              PLEX_CLAIM: "cole-seu-novo-token-aqui" 
+              PLEX_CLAIM: "claim-KsjHS64-NGm1q6fC-V91" 
             securityContext:
               privileged: false
               devices:
-                - /dev/dri:/dev/dri
+                - /dev/dri:/dev/dri 
     service:
       main:
         ports:
@@ -47,29 +46,28 @@ spec:
       config:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/plex
+        hostPath: /srv/k3s/configs/plex 
         advancedMounts:
           main:
             main:
               - path: /config
       transcode:
         enabled: true
-        type: emptyDir
-      media:
-        enabled: true
-        type: hostPath
-        hostPath: /mnt/media
-        advancedMounts:
-          main:
-            main:
-              - path: /media
-                readOnly: true 
+        type: emptyDir 
+      # media:
+      #   enabled: true
+      #   type: hostPath
+      #   hostPath: /mnt/media 
+      #   advancedMounts:
+      #     main:
+      #       main:
+      #         - path: /media
       downloads:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads
+        hostPath: /srv/k3s/data/downloads 
         advancedMounts:
           main:
             main:
               - path: /downloads
-                readOnly: true 
+                readOnly: true
