@@ -44,23 +44,32 @@ spec:
             hosts: [plex.franch.in]
         annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
     persistence:
-      plex-config:
+      config:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/plex
-        mountPath: /config
+        advancedMounts:
+          main:
+            main:
+              - path: /config
       transcode:
         enabled: true
         type: emptyDir
-      plex-media:
+      media:
         enabled: true
         type: hostPath
         hostPath: /mnt/media
-        mountPath: /media
-        readOnly: true 
-      plex-downloads:
+        advancedMounts:
+          main:
+            main:
+              - path: /media
+                readOnly: true 
+      downloads:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads 
-        mountPath: /downloads              
-        readOnly: true                     
+        hostPath: /srv/k3s/data/downloads
+        advancedMounts:
+          main:
+            main:
+              - path: /downloads
+                readOnly: true 

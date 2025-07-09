@@ -46,14 +46,14 @@ spec:
         type: hostPath
         hostPath: /srv/k3s/configs/qbittorrent
         advancedMounts:
-          main: 
-            main: 
-              - path: /config 
+          main:
+            main:
+              - path: /config
       downloads:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/data/downloads
         advancedMounts:
-          main: 
-            main: 
-              - path: /downloads 
+          main:
+            main:
+              - path: /downloads
