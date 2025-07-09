@@ -17,11 +17,12 @@ spec:
           main:
             image:
               repository: lscr.io/linuxserver/plex
+              tag: latest
             env:
               PUID: "1000"
               PGID: "1000"
               TZ: "America/Sao_Paulo"
-              PLEX_CLAIM: "claim-KsjHS64-NGm1q6fC-V91" 
+              PLEX_CLAIM: "claim-cYd6p4yjWTXizFx3Z6nq" 
             securityContext:
               privileged: false
               devices:
