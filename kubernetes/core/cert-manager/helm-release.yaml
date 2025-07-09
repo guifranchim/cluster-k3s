@@ -4,11 +4,17 @@ metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: cert-manager
       version: v1.13.2
       sourceRef: {kind: HelmRepository, name: jetstack, namespace: flux-system}
-  install: {createNamespace: false, crds: Create}
-  upgrade: {crds: CreateReplace}
+  values:    
+    installCRDs: true
+    webhook:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+    cainjector:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
