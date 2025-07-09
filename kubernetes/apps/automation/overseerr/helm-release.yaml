@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2 
 kind: HelmRelease
 metadata:
   name: overseerr
@@ -10,19 +10,33 @@ spec:
       chart: app-template
       version: "2.4.0"
       sourceRef: { kind: HelmRepository, name: bjw-s-labs, namespace: flux-system }
-  values:
-    image: { repository: lscr.io/linuxserver/overseerr, tag: latest }
+  values: 
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: lscr.io/linuxserver/overseerr
+              tag: latest
+    service:
+      main:
+        ports:
+          http:
+            port: 5055 
     ingress:
-      enabled: true
-      hosts:
-        - host: requests.franch.in
-          paths: [{ path: /, pathType: Prefix }]
-      tls:
-        - secretName: overseerr-tls
-          hosts: [requests.franch.in]
-      annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
+      main:
+        enabled: true
+        className: "nginx"
+        hosts:
+          - host: requests.franch.in
+            paths: [{ path: /, pathType: Prefix }]
+        tls:
+          - secretName: overseerr-tls
+            hosts: [requests.franch.in]
+        annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
     persistence:
       config:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/overseerr
+        mountPath: /config
