@@ -4,3 +4,4 @@ resources:
   - plex-repository.yaml
   - jetstack-repository.yaml
   - ingress-nginx-repository.yaml
+  - bjw-s-labs-repository.yaml
