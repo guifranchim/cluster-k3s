@@ -1,8 +1,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: plex
-  namespace: media
+  name: qbittorrent
+  namespace: automation
 spec:
   interval: 15m
   chart:
@@ -16,51 +16,44 @@ spec:
         containers:
           main:
             image:
-              repository: lscr.io/linuxserver/plex
-              tag: latest
+              repository: lscr.io/linuxserver/qbittorrent
+              tag: "latest"
             env:
               PUID: "1000"
               PGID: "1000"
-              TZ: "America/Sao_Paulo"
-              PLEX_CLAIM: "cole-seu-novo-token-aqui" 
-            securityContext:
-              privileged: false
-              devices:
-                - /dev/dri:/dev/dri
+              WEBUI_UP: "true"
+              WEBUI_USERNAME: "admin"
+              WEBUI_PASSWORD: "changeme"
     service:
       main:
         ports:
           http:
-            port: 32400
+            port: 8080
     ingress:
       main:
         enabled: true
         className: "nginx"
         hosts:
-          - host: plex.franch.in
+          - host: qbittorrent.franch.in
             paths: [{ path: /, pathType: Prefix }]
         tls:
-          - secretName: plex-tls-cert
-            hosts: [plex.franch.in]
+          - secretName: qbittorrent-tls
+            hosts: [qbittorrent.franch.in]
         annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
     persistence:
-      plex-config:
+      config:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/configs/plex
-        mountPath: /config
-      transcode:
-        enabled: true
-        type: emptyDir
-      plex-media:
-        enabled: true
-        type: hostPath
-        hostPath: /mnt/media
-        mountPath: /media
-        readOnly: true 
-      plex-downloads:
+        hostPath: /srv/k3s/configs/qbittorrent
+        advancedMounts:
+          main: 
+            main: 
+              - path: /config 
+      downloads:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads 
-        mountPath: /downloads              
-        readOnly: true                     
+        hostPath: /srv/k3s/data/downloads
+        advancedMounts:
+          main: 
+            main: 
+              - path: /downloads 
