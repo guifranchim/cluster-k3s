@@ -5,11 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/core/cert-manager-config
+  path: ./kubernetes/core/cert-manager-config 
   prune: true
   sourceRef: {kind: GitRepository, name: flux-system}
-  wait: true
+  wait: true 
   dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
-      kind: HelmRelease 
+    - name: infrastructure 
