@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - ../core/ingress-nginx
   - ../core/cert-manager
-  - cert-manager-config-kustomization.yaml
