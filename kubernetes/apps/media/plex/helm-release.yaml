@@ -16,10 +16,6 @@ spec:
         namespace: flux-system
       reconcileStrategy: ChartVersion
   values:
-    service:
-      type: LoadBalancer 
-      port: 32400
-  values:
     pms:
       securityContext:
         privileged: true
