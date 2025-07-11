@@ -39,13 +39,15 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/radarr
-      # downloads:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/downloads
-      #   mountPath: /downloads
-      # movies:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/media/movies
-      #   mountPath: /movies
+        advancedMounts:
+          main:
+            main:
+              - path: /radarr
+      downloads:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/data/downloads
+        advancedMounts:
+          main:
+            main:
+              - path: /downloads
