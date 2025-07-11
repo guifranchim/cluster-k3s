@@ -19,8 +19,8 @@ spec:
               repository: lscr.io/linuxserver/sonarr
               tag: latest
             env:
-              PUID: "0"
-              PGID: "0"
+              PUID: "1000"
+              PGID: "1000"
               TZ: "America/Sao_Paulo"
     service:
       main:
@@ -50,8 +50,16 @@ spec:
       downloads:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads
+        hostPath: /srv/k3s/data/downloads 
         advancedMounts:
           main:
             main:
               - path: /downloads
+      media:
+        enabled: true
+        type: hostPath
+        hostPath: /mnt/media
+        advancedMounts:
+          main:
+            main:
+              - path: /media 
