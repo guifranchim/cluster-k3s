@@ -49,11 +49,11 @@ spec:
           main:
             main:
               - path: /config
-      downloads:
+      data:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads
+        hostPath: /mnt
         advancedMounts:
           main:
             main:
-              - path: /downloads
+              - path: /data

@@ -55,20 +55,12 @@ spec:
       transcode:
         enabled: true
         type: emptyDir 
-      # media:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/media 
-      #   advancedMounts:
-      #     main:
-      #       main:
-      #         - path: /media
-      downloads:
+      data:
         enabled: true
         type: hostPath
-        hostPath: /srv/k3s/data/downloads 
+        hostPath: /mnt
         advancedMounts:
           main:
             main:
-              - path: /downloads
+              - path: /data
                 readOnly: true
