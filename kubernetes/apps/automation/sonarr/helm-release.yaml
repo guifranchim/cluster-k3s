@@ -43,13 +43,15 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/sonarr
-      # downloads:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/downloads
-      #   mountPath: /downloads
-      # tv:
-      #   enabled: true
-      #   type: hostPath
-      #   hostPath: /mnt/media/tv
-      #   mountPath: /tv
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+      downloads:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/data/downloads
+        advancedMounts:
+          main:
+            main:
+              - path: /downloads
