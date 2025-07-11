@@ -43,3 +43,7 @@ spec:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/overseerr
+        advancedMounts:
+          main:
+            main:
+              - path: /config
