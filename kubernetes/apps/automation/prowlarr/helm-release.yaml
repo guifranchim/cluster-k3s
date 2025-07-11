@@ -37,8 +37,11 @@ spec:
           - secretName: prowlarr-tls
             hosts: [prowlarr.franch.in]
         annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
-    persistence:
       config:
         enabled: true
         type: hostPath
         hostPath: /srv/k3s/configs/prowlarr
+        advancedMounts:
+          main:
+            main:
+              - path: /config
