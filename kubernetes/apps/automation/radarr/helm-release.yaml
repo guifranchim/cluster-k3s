@@ -42,7 +42,7 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /radarr
+              - path: /config
       downloads:
         enabled: true
         type: hostPath
