@@ -1,0 +1,27 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft-warden
+  namespace: gaming
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: minecraft-kubernetes-warden
+      version: "2.1.0"
+      sourceRef: { kind: HelmRepository, name: nicholasdille-charts, namespace: flux-system }
+  values:
+    replicaCount: 1
+    watchdog:
+      namespace: gaming
+      idleTimeout: 10m
+    mcProxy:
+      enabled: true
+      type: LoadBalancer 
+      port: 25565
+      onlineMessage: "franchin's server is Online!"
+      offlineMessage: "Desligado - conecte-se para ligar"
+      startupMessage: "Ligando o servidor..."
+    serviceAccount:
+      create: true
+      name: minecraft-warden

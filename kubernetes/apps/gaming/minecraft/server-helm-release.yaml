@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minecraft
+  name: minecraft-server
   namespace: gaming
 spec:
   interval: 15m
@@ -13,6 +13,8 @@ spec:
   values:
     controllers:
       main:
+        annotations:
+          warden.nicholasdille.name/watch: "true"
         containers:
           main:
             image:
@@ -21,24 +23,20 @@ spec:
             env:
               EULA: "TRUE"
               TYPE: "VANILLA"
-              VERSION: "1.21"
+              VERSION: "1.21.7"
               MEMORY: "1536M"
             resources:
               requests: { cpu: "250m", memory: "1Gi" }
               limits: { cpu: "1500m", memory: "2Gi" }
             tty: true
             stdin: true
-            labels:
-              app.kubernetes.io/instance: minecraft
     service:
       main:
-        type: LoadBalancer
         ports:
           minecraft:
             enabled: true
             port: 25565
             protocol: TCP
-            targetPort: 25565
     persistence:
       data:
         enabled: true
