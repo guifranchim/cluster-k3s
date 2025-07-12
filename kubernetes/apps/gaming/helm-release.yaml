@@ -1,0 +1,58 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minecraft
+  namespace: gaming
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.1.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: itzg/minecraft-server
+              tag: java17-jdk 
+            env:
+              EULA: "TRUE"
+              TYPE: "PAPER"
+              VERSION: "1.21"
+              MEMORY: "4G" 
+              JVM_OPTS: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:MaxTenuringThreshold=1"
+            resources:
+              requests:
+                cpu: "500m"
+                memory: "2Gi" 
+              limits:
+                cpu: "4000m"  
+                memory: "6Gi"   
+            tty: true
+            stdin: true
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ""
+        ports:
+          minecraft:
+            enabled: true
+            port: 25565
+            protocol: TCP
+            targetPort: 25565
+
+    persistence:
+      data:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/data/minecraft
+        advancedMounts:
+          main:
+            main:
+              - path: /data
