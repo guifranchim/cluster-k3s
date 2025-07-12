@@ -16,36 +16,31 @@ spec:
   values:
     controllers:
       main:
+        labels:
+          mc-autoshutdown: "true"
         containers:
           main:
             image:
               repository: itzg/minecraft-server
-              tag: java21-jdk 
-            labels:
-              mc-autoshutdown: "true"
+              tag: java21-jdk
             env:
               EULA: "TRUE"
-              TYPE: "VANILLA"   
+              TYPE: "VANILLA"
               VERSION: "1.21.7"
-              MEMORY: "1536M"   
+              MEMORY: "1536M"
             resources:
-              requests:
-                cpu: "250m"
-                memory: "1Gi"
-              limits:
-                cpu: "1500m"  
-                memory: "2Gi"   
+              requests: { cpu: "250m", memory: "1Gi" }
+              limits: { cpu: "1500m", memory: "2Gi" }
             tty: true
             stdin: true
     service:
       main:
-        type: LoadBalancer
+        enabled: true
         ports:
           minecraft:
             enabled: true
             port: 25565
             protocol: TCP
-            targetPort: 25565
     persistence:
       data:
         enabled: true

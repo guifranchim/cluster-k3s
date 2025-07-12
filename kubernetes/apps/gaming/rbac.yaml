@@ -5,8 +5,8 @@ metadata:
   name: mc-proxy-scaler
   namespace: gaming
 rules:
-- apiGroups: ["apps"]
-  resources: ["deployments"]
+- apiGroups: ["apps"]   
+  resources: ["deployments"] 
   verbs: ["get", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -16,9 +16,9 @@ metadata:
   namespace: gaming
 subjects:
 - kind: ServiceAccount
-  name: minecraft-proxy 
+  name: minecraft-proxy    
   namespace: gaming
-roleRef:
+roleRef: 
   kind: Role
   name: mc-proxy-scaler
   apiGroup: rbac.authorization.k8s.io
