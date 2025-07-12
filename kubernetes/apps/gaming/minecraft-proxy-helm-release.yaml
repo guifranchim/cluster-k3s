@@ -19,13 +19,9 @@ spec:
             enabled: true
             port: 25565
             protocol: TCP
-            targetPort: 25565 
+            targetPort: 25565
     controllers:
       main:
-        pod:
-          serviceAccount:
-            create: true
-            name: minecraft-proxy 
         containers:
           main:
             image:
@@ -33,8 +29,12 @@ spec:
               tag: latest
             env:
               PROXY_TO_HOST: "minecraft-server.gaming.svc.cluster.local"
-              PROXY_TO_PORT: "25565" 
+              PROXY_TO_PORT: "25565"
               MODE: "autostart"
               KUBERNETES_SELECTOR: "mc-autoshutdown=true"
               KUBERNETES_NAMESPACE: "gaming"
               SHUTDOWN_TIMEOUT_SECONDS: "600"
+    serviceAccount:      
+      main:    
+        create: true    
+        name: minecraft-proxy
