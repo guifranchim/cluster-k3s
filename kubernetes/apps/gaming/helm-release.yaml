@@ -24,7 +24,7 @@ spec:
             env:
               EULA: "TRUE"
               TYPE: "VANILLA"   
-              VERSION: "1.21"
+              VERSION: "1.21.7"
               MEMORY: "1536M"   
             resources:
               requests:
