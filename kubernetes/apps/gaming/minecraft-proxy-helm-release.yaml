@@ -22,6 +22,8 @@ spec:
             targetPort: 25565
     controllers:
       main:
+        pod:
+          serviceAccountName: minecraft-proxy-sa
         containers:
           main:
             image:
@@ -34,7 +36,3 @@ spec:
               KUBERNETES_SELECTOR: "mc-autoshutdown=true"
               KUBERNETES_NAMESPACE: "gaming"
               SHUTDOWN_TIMEOUT_SECONDS: "600"
-    serviceAccount:      
-      main:    
-        create: true    
-        name: minecraft-proxy
