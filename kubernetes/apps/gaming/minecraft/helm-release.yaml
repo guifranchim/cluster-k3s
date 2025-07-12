@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minecraft-server
+  name: minecraft
   namespace: gaming
 spec:
   interval: 15m
@@ -13,8 +13,6 @@ spec:
   values:
     controllers:
       main:
-        annotations:
-          warden.nicholasdille.name/watch: "true"
         containers:
           main:
             image:
@@ -32,11 +30,14 @@ spec:
             stdin: true
     service:
       main:
+        type: LoadBalancer
         ports:
           minecraft:
             enabled: true
             port: 25565
             protocol: TCP
+            targetPort: 25565
+
     persistence:
       data:
         enabled: true
