@@ -23,30 +23,27 @@ spec:
               tag: java21-jdk 
             env:
               EULA: "TRUE"
-              TYPE: "PAPER"
-              VERSION: "1.21.7"
-              MEMORY: "4G" 
-              JVM_OPTS: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:MaxTenuringThreshold=1"
+              TYPE: "VANILLA"   
+              VERSION: "1.21"
+              MEMORY: "1536M"   
             resources:
               requests:
-                cpu: "500m"
-                memory: "2Gi" 
+                cpu: "250m"
+                memory: "1Gi"
               limits:
-                cpu: "4000m"  
-                memory: "6Gi"   
+                cpu: "1500m"  
+                memory: "2Gi"   
             tty: true
             stdin: true
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: ""
         ports:
           minecraft:
             enabled: true
             port: 25565
             protocol: TCP
             targetPort: 25565
-
     persistence:
       data:
         enabled: true
