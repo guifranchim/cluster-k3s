@@ -20,7 +20,7 @@ spec:
           main:
             image:
               repository: itzg/minecraft-server
-              tag: java17-jdk 
+              tag: java21-jdk 
             env:
               EULA: "TRUE"
               TYPE: "PAPER"
