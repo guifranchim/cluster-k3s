@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minecraft-server
+  name: minecraft
   namespace: gaming
 spec:
   interval: 15m
@@ -9,15 +9,10 @@ spec:
     spec:
       chart: app-template
       version: "4.1.2"
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-labs
-        namespace: flux-system
+      sourceRef: { kind: HelmRepository, name: bjw-s-labs, namespace: flux-system }
   values:
     controllers:
       main:
-        labels:
-          mc-autoshutdown: "true"
         containers:
           main:
             image:
@@ -26,21 +21,24 @@ spec:
             env:
               EULA: "TRUE"
               TYPE: "VANILLA"
-              VERSION: "1.21.7"
+              VERSION: "1.21"
               MEMORY: "1536M"
             resources:
               requests: { cpu: "250m", memory: "1Gi" }
               limits: { cpu: "1500m", memory: "2Gi" }
             tty: true
             stdin: true
+            labels:
+              app.kubernetes.io/instance: minecraft
     service:
       main:
-        enabled: true
+        type: LoadBalancer
         ports:
           minecraft:
             enabled: true
             port: 25565
             protocol: TCP
+            targetPort: 25565
     persistence:
       data:
         enabled: true
