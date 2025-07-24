@@ -20,12 +20,19 @@ spec:
               tag: java21-jdk
             env:
               EULA: "TRUE"
-              TYPE: "VANILLA"
+              TYPE: "PAPER"
               VERSION: "1.21.7"
-              MEMORY: "1536M"
+              MEMORY: "1536M"          
+              MAX_PLAYERS: "5"         
+              USE_AIKAR_FLAGS: "true"  
+              ENABLE_AUTOPAUSE: "TRUE" 
             resources:
-              requests: { cpu: "250m", memory: "1Gi" }
-              limits: { cpu: "1500m", memory: "2Gi" }
+              requests:
+                cpu: "250m"
+                memory: "1Gi"
+              limits:
+                cpu: "1500m"
+                memory: "2Gi"
             tty: true
             stdin: true
     service:
