@@ -33,7 +33,7 @@ spec:
               AUTOPAUSE_TIMEOUT_INIT: "300"
               AUTOPAUSE_TIMEOUT_KN: "600"  
               ENABLE_PROMETHEUS_METRICS: "true"
-
+              AUTOPAUSE_TIMEOUT_STOP: "300"
             resources:
               requests:
                 cpu: "250m"
