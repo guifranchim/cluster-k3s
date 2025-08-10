@@ -53,6 +53,11 @@ spec:
             port: 25565
             protocol: TCP
             targetPort: 25565
+          metrics:
+            enabled: true
+            port: 8080
+            protocol: TCP
+            targetPort: 8080
 
     persistence:
       data:
