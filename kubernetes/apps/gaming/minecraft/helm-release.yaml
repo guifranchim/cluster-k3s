@@ -70,49 +70,6 @@ spec:
           main:
             main:
               - path: /data/plugins
-      
-      paper-file:
-        enabled: true
-        type: configMap
-        
-        name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-paper-config'
-        items:
-          - key: paper.yml
-            path: paper.yml
-        advancedMounts:
-          main:
-            main:
-              - path: /data/paper.yml   
-                subPath: paper.yml      
-                readOnly: true
-
-
-      spigot-file:
-        enabled: true
-        type: configMap
-        name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-spigot-config'
-        items:
-          - key: spigot.yml
-            path: spigot.yml
-        advancedMounts:
-          main:
-            main:
-              - path: /data/spigot.yml  
-                subPath: spigot.yml     
-                readOnly: true
-      bukkit-file:
-        enabled: true
-        type: configMap
-        name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-bukkit-config'
-        items:
-          - key: bukkit.yml
-            path: bukkit.yml
-        advancedMounts:
-          main:
-            main:
-              - path: /data/bukkit.yml 
-                subPath: bukkit.yml    
-                readOnly: true
 
     configMaps:
       paper-config:
