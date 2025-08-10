@@ -43,16 +43,6 @@ spec:
                 memory: "3Gi"
             tty: true
             stdin: true
-            volumeMounts:
-              - name: paper-config
-                mountPath: /data/paper.yml
-                subPath: paper.yml
-              - name: spigot-config
-                mountPath: /data/spigot.yml
-                subPath: spigot.yml
-              - name: bukkit-config
-                mountPath: /data/bukkit.yml
-                subPath: bukkit.yml
     service:
       main:
         type: LoadBalancer
@@ -80,6 +70,46 @@ spec:
           main:
             main:
               - path: /data/plugins
+      
+      paper-file:
+        enabled: true
+        type: configMap
+        # o nome do CM gerado pelo chart segue o fullname + sufixo; templating é aceito
+        name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-paper-config'
+        items:
+          - key: paper.yml
+            path: paper.yml
+        advancedMounts:
+          main:
+            main:
+              - path: /data
+                readOnly: true
+
+      spigot-file:
+        enabled: true
+        type: configMap
+        name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-spigot-config'
+        items:
+          - key: spigot.yml
+            path: spigot.yml
+        advancedMounts:
+          main:
+            main:
+              - path: /data
+                readOnly: true
+
+      bukkit-file:
+        enabled: true
+        type: configMap
+        name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-bukkit-config'
+        items:
+          - key: bukkit.yml
+            path: bukkit.yml
+        advancedMounts:
+          main:
+            main:
+              - path: /data
+                readOnly: true
 
     configMaps:
       paper-config:
