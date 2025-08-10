@@ -74,7 +74,7 @@ spec:
       paper-file:
         enabled: true
         type: configMap
-        # o nome do CM gerado pelo chart segue o fullname + sufixo; templating é aceito
+        
         name: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}-paper-config'
         items:
           - key: paper.yml
@@ -82,8 +82,10 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /data
+              - path: /data/paper.yml   
+                subPath: paper.yml      
                 readOnly: true
+
 
       spigot-file:
         enabled: true
@@ -95,9 +97,9 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /data
+              - path: /data/spigot.yml  
+                subPath: spigot.yml     
                 readOnly: true
-
       bukkit-file:
         enabled: true
         type: configMap
@@ -108,7 +110,8 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /data
+              - path: /data/bukkit.yml 
+                subPath: bukkit.yml    
                 readOnly: true
 
     configMaps:
