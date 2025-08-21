@@ -55,4 +55,4 @@ spec:
           main:
             main:
               - path: /data
-                mountPropagation: HostToContainer
+                
