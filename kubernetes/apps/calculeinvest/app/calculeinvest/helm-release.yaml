@@ -19,7 +19,7 @@ spec:
         containers:
           main:
             image:
-              repository: localhost:5000/calculeinvest
+              repository: guifranchim/financial-calculator
               tag: latest
               pullPolicy: Always
             env:
@@ -36,7 +36,9 @@ spec:
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
-            fsGroup: 1000 
+            fsGroup: 1000
+          imagePullSecrets:
+            - name: calculeinvest-registry 
     service:
       main:
         ports:
