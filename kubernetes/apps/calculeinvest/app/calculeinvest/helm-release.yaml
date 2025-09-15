@@ -51,9 +51,11 @@ spec:
         hosts:
           - host: calculeinvest.com
             paths: [{ path: /, pathType: Prefix }]
+          - host: www.calculeinvest.com
+            paths: [{ path: /, pathType: Prefix }]
         tls:
           - secretName: calculeinvest-app-tls
-            hosts: [calculeinvest.com]
+            hosts: [calculeinvest.com, www.calculeinvest.com]
         annotations: 
           cert-manager.io/cluster-issuer: "letsencrypt-production"
           nginx.ingress.kubernetes.io/use-real-ip: "true"
