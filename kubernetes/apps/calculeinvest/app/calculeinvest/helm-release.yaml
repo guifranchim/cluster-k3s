@@ -54,7 +54,11 @@ spec:
         tls:
           - secretName: calculeinvest-app-tls
             hosts: [calculeinvest.com]
-        annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
+        annotations: 
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          nginx.ingress.kubernetes.io/use-real-ip: "true"
+          nginx.ingress.kubernetes.io/real-ip-header: "CF-Connecting-IP"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     persistence:
       data:
         enabled: true
