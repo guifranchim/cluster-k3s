@@ -28,6 +28,9 @@ spec:
             env:
               TZ: "America/Sao_Paulo"
               NODE_ENV: "production"
+            ports:
+              - name: http
+                containerPort: 80
             resources:
               requests:
                 cpu: "100m"
@@ -42,7 +45,8 @@ spec:
       main:
         ports:
           http:
-            port: 3000
+            port: 80
+            targetPort: http
     ingress:
       main:
         enabled: true
