@@ -36,10 +36,6 @@ spec:
                 cpu: "500m"
                 memory: "512Mi"
         pod:
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            fsGroup: 1000
           imagePullSecrets:
             - name: agendu-registry
     service:
