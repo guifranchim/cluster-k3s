@@ -24,7 +24,7 @@ spec:
               PGID: "1000"
               TZ: "America/Sao_Paulo"
               VERSION: "docker"
-              PLEX_CLAIM: "claim-change"
+              PLEX_CLAIM: "claim-TX2tx_Phcz7A2JELoRcu"
             securityContext:
               privileged: false
               devices:
