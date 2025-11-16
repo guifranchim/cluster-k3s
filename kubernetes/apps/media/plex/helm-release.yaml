@@ -18,12 +18,13 @@ spec:
             image:
               repository: lscr.io/linuxserver/plex
               tag: latest
+              pullPolicy: Always
             env:
               PUID: "1000"
               PGID: "1000"
               TZ: "America/Sao_Paulo"
               VERSION: "docker"
-              PLEX_CLAIM: "claim-m7RQA-bVYdtY5AvZ_UDT"
+              PLEX_CLAIM: "claim-change"
             securityContext:
               privileged: false
               devices:
@@ -35,11 +36,13 @@ spec:
               limits:
                 cpu: "2000m" 
                 memory: "4Gi" 
+
     service:
       main:
         ports:
           http:
             port: 32400
+
     ingress:
       main:
         enabled: true
@@ -50,31 +53,33 @@ spec:
         tls:
           - secretName: plex-tls-cert
             hosts: [plex.franch.in]
-        annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
-      persistence:
-        config:
-          enabled: true
-          type: hostPath
-          hostPath: /srv/k3s/configs/plex
-          advancedMounts:
-            main:
-              main:
-                - path: /config
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
 
-        data:
-          enabled: true
-          type: hostPath
-          hostPath: /mnt/remote
-          advancedMounts:
+    persistence:
+      config:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/k3s/configs/plex
+        advancedMounts:
+          main:
             main:
-              main:
-                - path: /data
-                  readOnly: true
+              - path: /config
 
-        transcode:
-          enabled: true
-          type: emptyDir
-          advancedMounts:
+      data:
+        enabled: true
+        type: hostPath
+        hostPath: /mnt/remote
+        advancedMounts:
+          main:
             main:
-              main:
-                - path: /transcode
+              - path: /data
+                readOnly: true
+
+      transcode:
+        enabled: true
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+              - path: /transcode
