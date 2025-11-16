@@ -59,8 +59,8 @@ spec:
       data:
         enabled: true
         type: hostPath
-        hostPath: /mnt
+        hostPath: /srv/qbittorrent
         advancedMounts:
           main:
             main:
-              - path: /data
+              - path: /downloads
