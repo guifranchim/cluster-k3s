@@ -49,24 +49,30 @@ spec:
           - secretName: plex-tls-cert
             hosts: [plex.franch.in]
         annotations: { cert-manager.io/cluster-issuer: "letsencrypt-production" }
-    persistence:
-      config:
-        enabled: true
-        type: hostPath
-        hostPath: /srv/k3s/configs/plex 
-        advancedMounts:
-          main:
+      persistence:
+        config:
+          enabled: true
+          type: hostPath
+          hostPath: /srv/k3s/configs/plex
+          advancedMounts:
             main:
-              - path: /config
-      transcode:
-        enabled: true
-        type: emptyDir 
-      data:
-        enabled: true
-        type: hostPath
-        hostPath: /mnt
-        advancedMounts:
-          main:
+              main:
+                - path: /config
+
+        data:
+          enabled: true
+          type: hostPath
+          hostPath: /mnt/remote
+          advancedMounts:
             main:
-              - path: /data
-                readOnly: true
+              main:
+                - path: /data
+                  readOnly: true
+
+        transcode:
+          enabled: true
+          type: emptyDir
+          advancedMounts:
+            main:
+              main:
+                - path: /transcode
