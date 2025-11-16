@@ -22,7 +22,7 @@
                 memory: "1Gi"
               limits:
                 cpu: "2000m"
-                memory: "10Gi"
+                memory: "8Gi"
 
     service:
       main:
