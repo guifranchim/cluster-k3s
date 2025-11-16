@@ -47,10 +47,18 @@ spec:
           main:
             main:
               - path: /config
+      downloads:
+        enabled: true
+        type: hostPath
+        hostPath: /srv/qbittorrent
+        advancedMounts:
+          main:
+            main:
+              - path: /downloads
       data:
         enabled: true
         type: hostPath
-        hostPath: /mnt
+        hostPath: /mnt/remote
         advancedMounts:
           main:
             main:
