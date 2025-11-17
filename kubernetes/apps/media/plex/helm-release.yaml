@@ -26,11 +26,9 @@
 
     service:
       main:
-        type: NodePort
         ports:
           http:
             port: 32400
-            nodePort: 32400
 
     ingress:
       main:
