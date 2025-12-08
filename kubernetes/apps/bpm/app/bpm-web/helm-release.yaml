@@ -23,7 +23,7 @@ spec:
           main:
             image:
               repository: registry.franch.in/bpm-web
-              tag: v1
+              tag: v2
               pullPolicy: IfNotPresent
             env:
               TZ: "America/Sao_Paulo"
