@@ -22,7 +22,7 @@ spec:
         containers:
           main:
             image:
-              repository: registry.franch.in/bpm-web
+              repository: registry.franch.in/bpm-web:v1
               tag: v1
               pullPolicy: IfNotPresent
             env:
