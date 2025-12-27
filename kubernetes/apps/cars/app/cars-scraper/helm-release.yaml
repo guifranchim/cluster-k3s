@@ -1,0 +1,53 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cars-scraper
+  namespace: cars
+  labels:
+    app.kubernetes.io/name: cars-scraper
+    app.kubernetes.io/component: scraper
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: "4.1.2"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: registry.franch.in/back-end-car
+              tag: latest
+              pullPolicy: IfNotPresent
+            command:
+              - /bin/scraper
+            env:
+              TZ: "America/Sao_Paulo"
+            envFrom:
+              - secretRef:
+                  name: cars-scraper-env
+            resources:
+              requests:
+                cpu: "200m"
+                memory: "512Mi"
+              limits:
+                cpu: "1000m"
+                memory: "1Gi"
+        pod:
+          imagePullSecrets:
+            - name: registry-credentials
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            fsGroup: 1000
+    service:
+      main:
+        enabled: false
