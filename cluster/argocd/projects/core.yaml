@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: core
+  namespace: argocd
+spec:
+  description: Core platform services
+  sourceRepos:
+    - https://github.com/your-org/cluster-k3s.git
+    - https://bjw-s-labs.github.io/helm-charts
+    - https://charts.jetstack.io
+    - https://prometheus-community.github.io/helm-charts
+  destinations:
+    - namespace: cert-manager
+      server: https://kubernetes.default.svc
+    - namespace: core
+      server: https://kubernetes.default.svc
+    - namespace: monitoring
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

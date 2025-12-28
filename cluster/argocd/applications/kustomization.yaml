@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - infra-ingress-nginx.yaml
+  - core-cert-manager.yaml
+  - core-cert-manager-config.yaml
+  - core-cars-db.yaml
+  - core-monitoring.yaml
+  - app-agendu-frontend.yaml
+  - app-radarr.yaml
+  - app-sonarr.yaml
+  - app-prowlarr.yaml
+  - app-overseerr.yaml
+  - app-qbittorrent.yaml
+  - app-plex.yaml
+  - app-minecraft.yaml
+  - app-minecraft-metrics.yaml
+  - app-bpm-web.yaml
+  - app-calculeinvest.yaml
+  - app-registry.yaml
+  - app-cars-api.yaml
+  - app-cars-web.yaml
+  - app-cars-scraper.yaml
+  - secrets-core.yaml
+  - secrets-monitoring.yaml
+  - secrets-automation.yaml
+  - secrets-agendu.yaml
+  - secrets-bpm.yaml
+  - secrets-calculeinvest.yaml
+  - secrets-cars.yaml
+  - secrets-devops.yaml

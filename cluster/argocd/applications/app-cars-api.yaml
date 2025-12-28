@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-cars-api
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cars
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: "4.1.2"
+    helm:
+      values: |
+        controllers:
+          main:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            containers:
+              main:
+                image:
+                  repository: registry.franch.in/back-end-car
+                  tag: latest
+                  pullPolicy: Always
+                env:
+                  TZ: "America/Sao_Paulo"
+                envFrom:
+                  - secretRef:
+                      name: cars-api-env
+                resources:
+                  requests:
+                    cpu: "100m"
+                    memory: "256Mi"
+                  limits:
+                    cpu: "500m"
+                    memory: "512Mi"
+            pod:
+              imagePullSecrets:
+                - name: registry-credentials
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 1000
+                fsGroup: 1000
+        service:
+          main:
+            ports:
+              http:
+                port: 8082
+        ingress:
+          main:
+            enabled: true
+            className: "nginx"
+            hosts:
+              - host: api.cars.franch.in
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: cars-api-tls
+                hosts:
+                  - api.cars.franch.in
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+              nginx.ingress.kubernetes.io/use-real-ip: "true"
+              nginx.ingress.kubernetes.io/real-ip-header: "CF-Connecting-IP"
+              nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

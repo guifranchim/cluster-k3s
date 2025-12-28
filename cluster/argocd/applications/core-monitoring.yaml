@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: core-monitoring
+  namespace: argocd
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: "58.1.2"
+    helm:
+      values: |
+        fullnameOverride: "prometheus"
+        grafana:
+          enabled: true
+          admin:
+            existingSecret: grafana-admin
+            userKey: admin-user
+            passwordKey: admin-password
+          ingress:
+            enabled: true
+            ingressClassName: "nginx"
+            hosts:
+              - "grafana.franch.in"
+            path: /
+            tls:
+              - secretName: grafana-tls
+                hosts:
+                  - "grafana.franch.in"
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+          persistence:
+            enabled: true
+            type: pvc
+            storageClassName: "local-path"
+            size: 5Gi
+            accessModes:
+              - ReadWriteOnce
+        prometheus:
+          prometheusSpec:
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: "local-path"
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 10Gi
+        alertmanager:
+          enabled: false
+        prometheus-node-exporter:
+          enabled: true
+        kube-state-metrics:
+          enabled: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  description: Application workloads
+  sourceRepos:
+    - https://github.com/your-org/cluster-k3s.git
+    - https://bjw-s-labs.github.io/helm-charts
+  destinations:
+    - namespace: agendu
+      server: https://kubernetes.default.svc
+    - namespace: automation
+      server: https://kubernetes.default.svc
+    - namespace: media
+      server: https://kubernetes.default.svc
+    - namespace: gaming
+      server: https://kubernetes.default.svc
+    - namespace: bpm
+      server: https://kubernetes.default.svc
+    - namespace: calculeinvest
+      server: https://kubernetes.default.svc
+    - namespace: devops
+      server: https://kubernetes.default.svc
+    - namespace: cars
+      server: https://kubernetes.default.svc

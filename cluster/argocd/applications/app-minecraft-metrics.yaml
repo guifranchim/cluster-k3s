@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-minecraft-metrics
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gaming
+  source:
+    repoURL: https://github.com/your-org/cluster-k3s.git
+    targetRevision: HEAD
+    path: kubernetes/apps/gaming/minecraft
+    directory:
+      recurse: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

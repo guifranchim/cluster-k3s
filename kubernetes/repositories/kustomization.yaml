@@ -1,7 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - plex-repository.yaml
-  - jetstack-repository.yaml
-  - ingress-nginx-repository.yaml
-  - bjw-s-labs-repository.yaml

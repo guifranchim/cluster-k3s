@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  description: Cluster infrastructure components
+  sourceRepos:
+    - https://github.com/your-org/cluster-k3s.git
+    - https://kubernetes.github.io/ingress-nginx
+  destinations:
+    - namespace: networking
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

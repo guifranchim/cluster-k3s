@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: core-cars-db
+  namespace: argocd
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: core
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: "4.1.2"
+    helm:
+      values: |
+        controllers:
+          main:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            containers:
+              main:
+                image:
+                  repository: postgres
+                  tag: "15-alpine"
+                  pullPolicy: IfNotPresent
+                env:
+                  PGDATA: /var/lib/postgresql/data/pgdata
+                envFrom:
+                  - secretRef:
+                      name: cars-db-env
+                resources:
+                  requests:
+                    cpu: "100m"
+                    memory: "256Mi"
+                  limits:
+                    cpu: "500m"
+                    memory: "1Gi"
+        service:
+          main:
+            ports:
+              postgres:
+                port: 5432
+        persistence:
+          data:
+            enabled: true
+            type: hostPath
+            hostPath: /srv/k3s/data/cars/postgres
+            globalMounts:
+              - path: /var/lib/postgresql/data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

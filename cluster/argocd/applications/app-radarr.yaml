@@ -1,0 +1,78 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-radarr
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: automation
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: "4.1.2"
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: lscr.io/linuxserver/radarr
+                  tag: latest
+                env:
+                  PUID: "1000"
+                  PGID: "1000"
+                  TZ: "America/Sao_Paulo"
+        service:
+          main:
+            ports:
+              http:
+                port: 7878
+        ingress:
+          main:
+            enabled: true
+            className: "nginx"
+            hosts:
+              - host: radarr.franch.in
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: radarr-tls
+                hosts:
+                  - radarr.franch.in
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+        persistence:
+          config:
+            enabled: true
+            type: hostPath
+            hostPath: /srv/k3s/configs/radarr
+            advancedMounts:
+              main:
+                main:
+                  - path: /config
+          downloads:
+            enabled: true
+            type: hostPath
+            hostPath: /srv/qbittorrent
+            advancedMounts:
+              main:
+                main:
+                  - path: /downloads
+          data:
+            enabled: true
+            type: hostPath
+            hostPath: /mnt/remote
+            advancedMounts:
+              main:
+                main:
+                  - path: /data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

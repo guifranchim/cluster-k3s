@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-prowlarr
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: automation
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: "4.1.2"
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: lscr.io/linuxserver/prowlarr
+                  tag: latest
+                env:
+                  PUID: "0"
+                  PGID: "0"
+                  TZ: "America/Sao_Paulo"
+        service:
+          main:
+            ports:
+              http:
+                port: 9696
+        ingress:
+          main:
+            enabled: true
+            className: "nginx"
+            hosts:
+              - host: prowlarr.franch.in
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: prowlarr-tls
+                hosts:
+                  - prowlarr.franch.in
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+        persistence:
+          config:
+            enabled: true
+            type: hostPath
+            hostPath: /srv/k3s/configs/prowlarr
+            advancedMounts:
+              main:
+                main:
+                  - path: /config
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-overseerr
+  namespace: argocd
+spec:
+  project: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: automation
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: "4.1.2"
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: lscr.io/linuxserver/overseerr
+                  tag: latest
+                env:
+                  PUID: "1000"
+                  PGID: "1000"
+                  TZ: "America/Sao_Paulo"
+        service:
+          main:
+            ports:
+              http:
+                port: 5055
+        ingress:
+          main:
+            enabled: true
+            className: "nginx"
+            hosts:
+              - host: requests.franch.in
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: overseerr-tls
+                hosts:
+                  - requests.franch.in
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-production"
+        persistence:
+          config:
+            enabled: true
+            type: hostPath
+            hostPath: /srv/k3s/configs/overseerr
+            advancedMounts:
+              main:
+                main:
+                  - path: /config
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

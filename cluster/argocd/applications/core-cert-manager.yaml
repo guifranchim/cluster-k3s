@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: core-cert-manager
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  project: core
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  source:
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager
+    targetRevision: v1.13.2
+    helm:
+      values: |
+        installCRDs: true
+        webhook:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          securePort: 10260
+        cainjector:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
