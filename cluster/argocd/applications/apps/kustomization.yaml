@@ -1,18 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - agendu-frontend
-  - bpm-web
+  - agendu
+  - automation
+  - bpm
   - calculeinvest
-  - cars-api
-  - cars-scraper
-  - cars-web
-  - minecraft
-  - minecraft-metrics
-  - overseerr
-  - plex
-  - prowlarr
-  - qbittorrent
-  - radarr
-  - registry
-  - sonarr
+  - cars
+  - devops
+  - gaming
+  - media
