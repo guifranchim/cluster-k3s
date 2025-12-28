@@ -1,18 +1,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - app-agendu-frontend.yaml
-  - app-bpm-web.yaml
-  - app-calculeinvest.yaml
-  - app-cars-api.yaml
-  - app-cars-scraper.yaml
-  - app-cars-web.yaml
-  - app-minecraft.yaml
-  - app-minecraft-metrics.yaml
-  - app-overseerr.yaml
-  - app-plex.yaml
-  - app-prowlarr.yaml
-  - app-qbittorrent.yaml
-  - app-radarr.yaml
-  - app-registry.yaml
-  - app-sonarr.yaml
+  - agendu-frontend
+  - bpm-web
+  - calculeinvest
+  - cars-api
+  - cars-scraper
+  - cars-web
+  - minecraft
+  - minecraft-metrics
+  - overseerr
+  - plex
+  - prowlarr
+  - qbittorrent
+  - radarr
+  - registry
+  - sonarr
