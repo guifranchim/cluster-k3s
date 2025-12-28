@@ -4,8 +4,36 @@ resources:
   - namespace.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.7/manifests/install.yaml
   - argocd-cm.yaml
+  - repo-server-patch.yaml
   - projects
-  - applications
+  - applications/apps/agendu/frontend/app.yaml
+  - applications/apps/agendu/secrets/app.yaml
+  - applications/apps/automation/overseerr/app.yaml
+  - applications/apps/automation/prowlarr/app.yaml
+  - applications/apps/automation/qbittorrent/app.yaml
+  - applications/apps/automation/radarr/app.yaml
+  - applications/apps/automation/sonarr/app.yaml
+  - applications/apps/automation/secrets/app.yaml
+  - applications/apps/bpm/web/app.yaml
+  - applications/apps/bpm/secrets/app.yaml
+  - applications/apps/calculeinvest/app/app.yaml
+  - applications/apps/calculeinvest/secrets/app.yaml
+  - applications/apps/cars/api/app.yaml
+  - applications/apps/cars/scraper/app.yaml
+  - applications/apps/cars/web/app.yaml
+  - applications/apps/cars/secrets/app.yaml
+  - applications/apps/devops/registry/app.yaml
+  - applications/apps/devops/secrets/app.yaml
+  - applications/apps/gaming/minecraft/app.yaml
+  - applications/apps/gaming/minecraft-metrics/app.yaml
+  - applications/apps/media/plex/app.yaml
+  - applications/apps/core/secrets/app.yaml
+  - applications/apps/monitoring/secrets/app.yaml
+  - applications/core/cars-db/app.yaml
+  - applications/core/cert-manager/app.yaml
+  - applications/core/cert-manager-config/app.yaml
+  - applications/core/monitoring/app.yaml
+  - applications/infrastructure/ingress-nginx/app.yaml
 patches:
   - path: repo-server-patch.yaml
     target:
