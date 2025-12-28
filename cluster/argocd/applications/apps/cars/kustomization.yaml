@@ -4,3 +4,4 @@ resources:
   - api
   - scraper
   - web
+  - secrets
