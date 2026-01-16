@@ -29,24 +29,16 @@ spec:
                   TZ: America/Sao_Paulo
         service:
           main:
+            annotations:
+              tailscale.com/expose: "true"
+              tailscale.com/hostname: "prowlarr"
+              tailscale.com/tags: "tag:k8s"
             ports:
               http:
                 port: 9696
         ingress:
           main:
-            enabled: true
-            className: nginx
-            hosts:
-            - host: prowlarr.franch.in
-              paths:
-              - path: "/"
-                pathType: Prefix
-            tls:
-            - secretName: prowlarr-tls
-              hosts:
-              - prowlarr.franch.in
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-production
+            enabled: false
         persistence:
           config:
             enabled: true

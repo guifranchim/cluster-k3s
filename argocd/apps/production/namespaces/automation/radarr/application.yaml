@@ -29,24 +29,16 @@ spec:
                   TZ: America/Sao_Paulo
         service:
           main:
+            annotations:
+              tailscale.com/expose: "true"
+              tailscale.com/hostname: "radarr"
+              tailscale.com/tags: "tag:k8s"
             ports:
               http:
                 port: 7878
         ingress:
           main:
-            enabled: true
-            className: nginx
-            hosts:
-            - host: radarr.franch.in
-              paths:
-              - path: "/"
-                pathType: Prefix
-            tls:
-            - secretName: radarr-tls
-              hosts:
-              - radarr.franch.in
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-production
+            enabled: false
         persistence:
           config:
             enabled: true

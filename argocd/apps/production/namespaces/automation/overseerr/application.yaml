@@ -29,24 +29,16 @@ spec:
                   TZ: America/Sao_Paulo
         service:
           main:
+            annotations:
+              tailscale.com/expose: "true"
+              tailscale.com/hostname: "requests"
+              tailscale.com/tags: "tag:k8s"
             ports:
               http:
                 port: 5055
         ingress:
           main:
-            enabled: true
-            className: nginx
-            hosts:
-            - host: requests.franch.in
-              paths:
-              - path: "/"
-                pathType: Prefix
-            tls:
-            - secretName: overseerr-tls
-              hosts:
-              - requests.franch.in
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-production
+            enabled: false
         persistence:
           config:
             enabled: true
