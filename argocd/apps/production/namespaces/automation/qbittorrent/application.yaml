@@ -1,0 +1,82 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qbittorrent
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: automation
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: 4.1.2
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: lscr.io/linuxserver/qbittorrent
+                  tag: latest
+                env:
+                  PUID: '1000'
+                  PGID: '1000'
+                  WEBUI_UP: 'true'
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 512Mi
+                  limits:
+                    cpu: 2000m
+                    memory: 2Gi
+                envFrom:
+                - secretRef:
+                    name: qbittorrent-env
+        service:
+          main:
+            ports:
+              http:
+                port: 8080
+        ingress:
+          main:
+            enabled: true
+            className: nginx
+            hosts:
+            - host: qbittorrent.franch.in
+              paths:
+              - path: "/"
+                pathType: Prefix
+            tls:
+            - secretName: qbittorrent-tls
+              hosts:
+              - qbittorrent.franch.in
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-production
+        persistence:
+          config:
+            enabled: true
+            type: hostPath
+            hostPath: "/srv/k3s/configs/qbittorrent"
+            advancedMounts:
+              main:
+                main:
+                - path: "/config"
+          data:
+            enabled: true
+            type: hostPath
+            hostPath: "/srv/qbittorrent"
+            advancedMounts:
+              main:
+                main:
+                - path: "/downloads"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

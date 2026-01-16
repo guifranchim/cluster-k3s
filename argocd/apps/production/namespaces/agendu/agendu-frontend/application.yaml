@@ -1,0 +1,77 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: agendu-frontend
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: agendu
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: 4.1.2
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: registry.franch.in/agendu/front-agendu
+                  tag: latest
+                  pullPolicy: Always
+                env:
+                  TZ: America/Sao_Paulo
+                  NODE_ENV: production
+                ports:
+                - name: http
+                  containerPort: 80
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+                  limits:
+                    cpu: 500m
+                    memory: 512Mi
+            pod:
+              imagePullSecrets:
+              - name: registry-credentials
+        service:
+          main:
+            ports:
+              http:
+                port: 80
+                targetPort: http
+        ingress:
+          main:
+            enabled: true
+            className: nginx
+            hosts:
+            - host: agendu.franch.in
+              paths:
+              - path: "/"
+                pathType: Prefix
+            tls:
+            - secretName: agendu-frontend-tls
+              hosts:
+              - agendu.franch.in
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-production
+              nginx.ingress.kubernetes.io/use-real-ip: 'true'
+              nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+        persistence:
+          cache:
+            enabled: true
+            type: emptyDir
+            globalMounts:
+            - path: "/app/.next/cache"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

@@ -1,0 +1,94 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: calculeinvest-app
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: calculeinvest
+  source:
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    chart: app-template
+    targetRevision: 4.1.2
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: guifranchim/financial-calculator
+                  tag: latest
+                  pullPolicy: Always
+                env:
+                  TZ: America/Sao_Paulo
+                  NODE_ENV: production
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+                  limits:
+                    cpu: 500m
+                    memory: 512Mi
+            pod:
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 1000
+                fsGroup: 1000
+              imagePullSecrets:
+              - name: calculeinvest-registry
+        service:
+          main:
+            ports:
+              http:
+                port: 3000
+        ingress:
+          main:
+            enabled: true
+            className: nginx
+            hosts:
+            - host: calculeinvest.com
+              paths:
+              - path: "/"
+                pathType: Prefix
+            - host: www.calculeinvest.com
+              paths:
+              - path: "/"
+                pathType: Prefix
+            tls:
+            - secretName: calculeinvest-app-tls
+              hosts:
+              - calculeinvest.com
+              - www.calculeinvest.com
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-production
+              nginx.ingress.kubernetes.io/use-real-ip: 'true'
+              nginx.ingress.kubernetes.io/real-ip-header: CF-Connecting-IP
+              nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+        persistence:
+          data:
+            enabled: true
+            type: hostPath
+            hostPath: "/srv/k3s/data/calculeinvest/app"
+            advancedMounts:
+              main:
+                main:
+                - path: "/app/.next/cache"
+          uploads:
+            enabled: true
+            type: hostPath
+            hostPath: "/srv/k3s/data/calculeinvest/uploads"
+            advancedMounts:
+              main:
+                main:
+                - path: "/app/public/uploads"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

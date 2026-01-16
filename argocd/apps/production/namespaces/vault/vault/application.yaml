@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
+  source:
+    repoURL: https://helm.releases.hashicorp.com
+    chart: vault
+    targetRevision: 0.31.0
+    helm:
+      values: |
+        global:
+          tlsDisable: true
+        server:
+          standalone:
+            enabled: true
+          ha:
+            enabled: false
+          dataStorage:
+            enabled: true
+            storageClass: local-path
+        ui:
+          enabled: true
+          serviceType: ClusterIP
+        injector:
+          enabled: false
+        csi:
+          enabled: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
